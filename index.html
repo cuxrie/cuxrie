@@ -1,10 +1,71 @@
-<!-- Example Lobby Concept -->
-<div class="app">
-   <h1>Game Center</h1>
-   <p>Select a game below to play!</p>
-   <div class="game-selection">
-      <a href="games/huske/index.html" class="card">Memory Game</a>
-      <a href="games/typing/index.html" class="card">Typing Speed Test</a>
-      <a href="games/snake/index.html" class="card">Snake Game</a>
-   </div>
-</div>
+<!-- Root index.html (The Main Menu) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuxrie's Game Hub</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --text: #e2e8f0;
+    }
+    body {
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 60%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container { text-align: center; max-width: 900px; padding: 40px; }
+    h1 { font-size: clamp(2rem, 8vw, 3.5rem); color: var(--accent); margin-bottom: 10px; }
+    p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 40px; }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background: var(--card);
+      padding: 40px;
+      border-radius: 25px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+    .card h2 { margin: 0; color: var(--accent); }
+    .card p { font-size: 0.9rem; margin-top: 10px; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cuxrie's Games</h1>
+    <p>Select a challenge below to begin.</p>
+    <div class="game-grid">
+      <a href="games/huske/" class="card">
+        <h2>Memory Game</h2>
+        <p>Remember monk</p>
+      </a>
+      <a href="games/typing/" class="card">
+        <h2>Typing Test</h2>
+        <p>Type copy pasta</p>
+      </a>
+      <a href="games/snake/" class="card">
+        <h2>Snake</h2>
+        <p>Amma silly snake</p>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
