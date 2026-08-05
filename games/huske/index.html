@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2338bdf8'/%3E%3Ctext x='50%' y='55%' font-size='55' text-anchor='middle' fill='%230f172a' font-family='system-ui, sans-serif'%3E%3CM%3C/text%3E%3C/svg%3E" />
+  <title>24 Card Memory Game</title>
+  <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div>
+        <h1 id="game-title">24 card Memory Game</h1>
+        <p id="game-desc">Match all 12 pairs. Tap two cards to reveal them.</p>
+      </div>
+      <div class="buttons">
+        <button id="restartBtn">Restart</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span>Moves</span>
+        <strong id="movesCount">0</strong>
+      </div>
+      <div class="stat">
+        <span>Matches</span>
+        <strong id="matchesCount">0 / 12</strong>
+      </div>
+      <div class="stat">
+        <span>Time</span>
+        <strong id="timer">00:00</strong>
+      </div>
+    </div>
+
+    <div class="board" id="board"></div>
+    <div class="message" id="message">Ready to play! Flip the first card.</div>
+  </div>
+
+  <!-- Link to your JS file -->
+  <script src="script.js"></script>
+</body>
+</html>
