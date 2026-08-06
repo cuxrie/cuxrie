@@ -6,6 +6,19 @@ const accuracyEl = document.getElementById('accuracy');
 const messageEl = document.getElementById('message');
 const restartBtn = document.getElementById('restartBtn');
 
+// --- NEW: ANTI-CHEAT SECTION ---
+// This prevents the user from pasting into the textarea
+typingInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+});
+
+// This prevents them from right-clicking or copying the text to use elsewhere
+[quoteDisplay, typingInput].forEach(element => {
+    element.addEventListener('copy', (e) => e.preventDefault());
+    element.addEventListener('contextmenu', (e) => e.preventDefault()); // Disables right-click menu
+});
+// --------------------------------
+
 const quotePool = [
     "The Girl you just called fat? She shit herself & lost 15kgs. The Boy you just called stupid? He shit himself. The Girl you just called ugly? She spends hours shitting and farting. The Boy you just tripped? He shit his pants. There's more to people than you think.",
     "Number one. Steady hand. One day, Kim Jong Un need new heart. I do operation. But mistake! Kim Jong Un die! SSD very mad!! I hide fishing boat, come to America. No English, no food, no money. Darryl give me job. Now I have house, American car and new woman. Darryl save life. My big secret. I kill Kim Jong Un on purpose. I good surgeon. The best!",
