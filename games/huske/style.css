@@ -158,6 +158,56 @@ button:hover {
   font-size: 1rem;
 }
 
+.challenge-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    /* Adjust grid flow for smaller screens */
+    flex-basis: 100%; 
+    justify-content: center; /* Center controls if space allows */
+}
+
+.toggle-label {
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* Minimal styling for checkbox toggle to look nice */
+input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+    margin-left: 8px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #38bdf8;
+    border-color: #22c55e;
+}
+
+input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+input[type="checkbox"]:checked::before {
+    transform: translateX(100%);
+}
+
 @media (max-width: 640px) {
   .board {
     gap: 10px;
@@ -165,5 +215,11 @@ button:hover {
   .header {
     flex-direction: column;
     align-items: flex-start;
+  }
+  /* Ensure the challenge controls stack nicely on small screens */
+  .challenge-controls {
+    flex-basis: auto;
+    width: 100%;
+    justify-content: flex-start;
   }
 }

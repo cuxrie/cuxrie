@@ -4,6 +4,7 @@ const matchesCountEl = document.getElementById('matchesCount');
 const timerEl = document.getElementById('timer');
 const messageEl = document.getElementById('message');
 const restartBtn = document.getElementById('restartBtn');
+const shuffleToggle = document.getElementById('shuffleChallengeToggle'); 
 
 const PAIRS = 12;
 // This list stays in JS memory and is never printed into the HTML.
@@ -30,6 +31,7 @@ let started = false;
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
+let shuffleChallengeEnabled = true; 
 
 // Helper to draw onto canvas
 function drawImageToCanvas(canvasElement, imageUrl) {
@@ -47,13 +49,6 @@ function createCard(value) {
     const card = document.createElement('div');
     card.className = 'card';
     
-    // IMPORTANT: We do NOT use data-attributes like data-index.
-    // We attach the value directly to the object in memory.
-    // This will NOT show up when someone "Inspects" the element.
-    card_value = value; 
-    card.dataset.id = Math.random().toString(36).substr(2, 9); // Optional: gives each card a unique random ID
-    
-    // We attach the actual matching logic to the JS object directly
     card.internalValue = value; 
 
     card.innerHTML = `
@@ -64,8 +59,16 @@ function createCard(value) {
           </div>
         </div>
     `;
-    card.addEventListener('click', () => revealCard(card));
     return card;
+}
+
+function attachCardListeners(card) {
+    card.addEventListener('click', cardClickHandler);
+}
+
+function cardClickHandler() {
+    const card = this;
+    revealCard(card);
 }
 
 function revealCard(card) {
@@ -73,7 +76,6 @@ function revealCard(card) {
     
     card.classList.add('revealed');
 
-    // Draw the image based on the property stored in memory, not a data attribute
     const canvas = card.querySelector('canvas');
     if (canvas && card.internalValue) {
         drawImageToCanvas(canvas, card.internalValue);
@@ -95,7 +97,6 @@ function revealCard(card) {
 }
 
 function checkForMatch() {
-    // Comparison happens in JS memory, not by looking at HTML attributes
     if (firstCard.internalValue === secondCard.internalValue) {
         disableMatchedCards();
     } else {
@@ -108,7 +109,23 @@ function disableMatchedCards() {
     secondCard.classList.add('matched');
     matches += 1;
     updateStats();
-    resetBoardState();
+    
+    // Wait for the animation
+    setTimeout(() => {
+        if (matches < PAIRS) {
+            // --- MODIFICATION HERE: Check the challenge state ---
+            if (shuffleChallengeEnabled) {
+                shuffleUnmatchedCards();
+            } else {
+                // If shuffling is off, just reset the internal pointers
+                resetBoardState();
+            }
+        } else {
+            // If game is over, just reset internal pointers
+            resetBoardState();
+        }
+    }, 100); 
+
     if (matches === PAIRS) {
         stopTimer();
         messageEl.textContent = `Victory! You finished in ${moves} moves and ${formatTime(seconds)}.`;
@@ -166,6 +183,31 @@ function shuffle(array) {
     return array;
 }
 
+function shuffleUnmatchedCards() {
+    const allCards = Array.from(board.children);
+
+    // Only cards that have not been matched participate in the shuffle.
+    const unmatchedCards = allCards.filter(
+        card => !card.classList.contains('matched')
+    );
+
+    if (unmatchedCards.length <= 1) return;
+
+    // Extract the values from the unmatched cards.
+    const values = unmatchedCards.map(card => card.internalValue);
+
+    // Shuffle the values, not the DOM elements.
+    shuffle(values);
+
+    // Assign the shuffled values back to the existing card positions.
+    unmatchedCards.forEach((card, index) => {
+        card.internalValue = values[index];
+    });
+
+    // Clear references to the cards involved in the previous turn.
+    resetBoardState();
+}
+
 function renderBoard() {
     board.innerHTML = '';
     let indices = [];
@@ -173,8 +215,12 @@ function renderBoard() {
     const shuffledIndices = shuffle([...indices, ...indices]);
 
     shuffledIndices.forEach((idx) => {
-        // Pass the index/path to createCard
         board.appendChild(createCard(IMAGE_PATHS[idx]));
+    });
+    
+    // Attach all listeners after the entire board is built
+    Array.from(board.children).forEach(card => {
+        attachCardListeners(card);
     });
 }
 
@@ -190,6 +236,12 @@ function resetGame() {
     resetBoardState();
     renderBoard();
 }
+
+// --- NEW: Event listener for the challenge toggle ---
+shuffleToggle.addEventListener('change', (event) => {
+    shuffleChallengeEnabled = event.target.checked;
+    resetGame();
+});
 
 restartBtn.addEventListener('click', resetGame);
 window.onload = () => {
